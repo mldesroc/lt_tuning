@@ -9,7 +9,7 @@ shp_HWF_harvests <- st_read("Shapefiles/HWF_Recent_Harvests/HWF_Recent_Harvests.
 shp_UHW_boundary <- st_read("Shapefiles/UHW_Tracts/UHW_Tracts.shp")
 shp_UHW_harvests <- st_read("Shapefiles/UHW_NY_UpperHudson_harvests_FW/NY_UpperHudson_harvests_FW.shp")
 
-disturbances <- raster("rasters/lt_gee_nbr_greatest_tuning_modelproportion_1.tif")
+disturbances <- raster("rasters/lt_gee_nbr_greatest_tuning_combo_1.tif")
 
 #clip/mask rasters to extent of harvest polygons
 UHW_clip <- crop(disturbances, shp_UHW_boundary, snap='out')
@@ -80,13 +80,13 @@ accuracy <- (TP + TN)/(TN + FN + TP + FP)
 
 #tuning_results <- read.csv("tuning_results.csv", header = TRUE)
 tuning_results <- dplyr::add_row(tuning_results, 
-                                 file_name = "lt_gee_nbr_greatest_tuning_modelproportion_5", 
-                                 short_name ="modelproportion_0.5", 
-                                 maxSegments = 10, 
-                                 vertexCountOvershoot = 3, 
-                                 recoveryThreshold = 0.25, 
-                                 pvalThreshold = 0.2, 
-                                 bestModelProportion = 0.5, 
+                                 file_name = "lt_gee_nbr_greatest_tuning_combo_1", 
+                                 short_name ="combo_1", 
+                                 maxSegments = 12, 
+                                 vertexCountOvershoot = 1, 
+                                 recoveryThreshold = 0.75, 
+                                 pvalThreshold = 0.1, 
+                                 bestModelProportion = 0.75, 
                                  TN = TN, 
                                  FN = FN, 
                                  TP = TP, 
@@ -95,7 +95,7 @@ tuning_results <- dplyr::add_row(tuning_results,
                                  Precision = precision, 
                                  F1 = F1, 
                                  Accuracy = accuracy)
-write.csv(tuning_results, "tuning_results.csv")
+#write.csv(tuning_results, "tuning_results.csv")
 
 #writeRaster(HWF_TP, "HWF_LT_newest_TP_test_2", format = 'GTiff')
 #writeRaster(UHW_TP, "UHW_LT_newest_TP_test_2", format = 'GTiff')

@@ -9,7 +9,7 @@ shp_HWF_harvests <- st_read("Shapefiles/HWF_Recent_Harvests/HWF_Recent_Harvests.
 shp_UHW_boundary <- st_read("Shapefiles/UHW_Tracts/UHW_Tracts.shp")
 shp_UHW_harvests <- st_read("Shapefiles/UHW_NY_UpperHudson_harvests_FW/NY_UpperHudson_harvests_FW.shp")
 
-disturbances <- raster("rasters/lt_gee_nbr_greatest_tuning_combo_1.tif")
+disturbances <- raster("rasters/lt_gee_nbr_greatest_tuning_combo_12.tif")
 
 #clip/mask rasters to extent of harvest polygons
 UHW_clip <- crop(disturbances, shp_UHW_boundary, snap='out')
@@ -80,11 +80,11 @@ accuracy <- (TP + TN)/(TN + FN + TP + FP)
 
 #tuning_results <- read.csv("tuning_results.csv", header = TRUE)
 tuning_results <- dplyr::add_row(tuning_results, 
-                                 file_name = "lt_gee_nbr_greatest_tuning_combo_1", 
-                                 short_name ="combo_1", 
-                                 maxSegments = 12, 
+                                 file_name = "lt_gee_nbr_greatest_tuning_combo_12", 
+                                 short_name ="combo_12", 
+                                 maxSegments = 16, 
                                  vertexCountOvershoot = 1, 
-                                 recoveryThreshold = 0.75, 
+                                 recoveryThreshold = 0.5, 
                                  pvalThreshold = 0.1, 
                                  bestModelProportion = 0.75, 
                                  TN = TN, 
@@ -95,6 +95,7 @@ tuning_results <- dplyr::add_row(tuning_results,
                                  Precision = precision, 
                                  F1 = F1, 
                                  Accuracy = accuracy)
+#tuning_results <- subset(tuning_results, select = - X)
 #write.csv(tuning_results, "tuning_results.csv")
 
 #writeRaster(HWF_TP, "HWF_LT_newest_TP_test_2", format = 'GTiff')
